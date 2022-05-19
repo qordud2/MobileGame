@@ -16,6 +16,8 @@ public class PlayerAttack : MonoBehaviour
     public GameObject weponObject;
     WeaponTrigger weaponTrigger;
     Animator animator;
+    [HideInInspector]
+    public PlayerAnimEvent animEvent;
     int atkCount = 1;
     int maxAtkCount = 5;
     float attackTime = 0.0f;
@@ -25,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     void Awake()
     {
         animator = GetComponentInChildren<Animator>();
+        animEvent = animator.GetComponent<PlayerAnimEvent>();
         weaponTrigger = weponObject.GetComponent<WeaponTrigger>();
     }
 
@@ -77,8 +80,9 @@ public class PlayerAttack : MonoBehaviour
                     }
                     else
                     {
-                        Attack();
                         attackAction.Invoke();
+                        animator.SetTrigger("NormalAttack");
+                        Attack();
                     }
                     break;
                 }
@@ -94,7 +98,7 @@ public class PlayerAttack : MonoBehaviour
         {
             atkCount = 1;
         }
-        attackTime = 0.5f;
+        attackTime = 0.9f;
         ChangeState(AttackState.Normal);
     }
 

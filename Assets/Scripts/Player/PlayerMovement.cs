@@ -23,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        playerAttack.attackAction += AttackSuccess;
+        playerAttack.attackAction += OnAttack;
+        playerAttack.animEvent.attackEndAction += EndAttack;
     }
 
     // Update is called once per frame
@@ -38,6 +39,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector2 input = new Vector2(InputManager.Instance.xMove, InputManager.Instance.yMove);
         if(input.magnitude <= 0)
+        {
+            return;
+        }
+        if(navMesh.isStopped == true)
         {
             return;
         }
@@ -79,8 +84,13 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", navMesh.velocity.magnitude / navMesh.speed);
     }
 
-    void AttackSuccess()
+    void OnAttack()
     {
         navMesh.isStopped = true;
+    }
+
+    void EndAttack()
+    {
+        navMesh.isStopped = false;
     }
 }

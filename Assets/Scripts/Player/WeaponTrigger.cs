@@ -18,9 +18,4 @@ public class WeaponTrigger : MonoBehaviour
             Debug.Log("Trigger");
         }
     }
-
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log("Stay");
-    }
 }
