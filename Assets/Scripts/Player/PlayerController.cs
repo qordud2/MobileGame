@@ -2,27 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+namespace RPG
 {
-    PlayerAttack playerAttack;
-
-    // Start is called before the first frame update
-    void Awake()
+    public class PlayerController : MonoBehaviour
     {
-        playerAttack = GetComponentInChildren<PlayerAttack>();
-    }
+        PlayerAttack playerAttack;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Attack();
-    }
+        // Start is called before the first frame update
+        void Awake()
+        {
+            playerAttack = GetComponentInChildren<PlayerAttack>();
+        }
 
-    void Attack()
-    {
-        //if(InputManager.Instance.attack)
-        //{
-        //    playerAttack.Attack();
-        //}
+        // Update is called once per frame
+        void Update()
+        {
+            //Attack();
+        }
+
+        void Attack()
+        {
+            //if(InputManager.Instance.attack)
+            //{
+            //    playerAttack.Attack();
+            //}
+        }
     }
 }
+
+

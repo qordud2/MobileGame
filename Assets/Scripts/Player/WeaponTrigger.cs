@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class WeaponTrigger : MonoBehaviour
+namespace RPG
 {
-    public UnityAction AttackEvent;
-    [HideInInspector]
-    public Enemy enemy;
-
-    private void OnTriggerEnter(Collider other)
+    public class WeaponTrigger : MonoBehaviour
     {
-        if(other.transform.gameObject.tag == "Enemy")
+        public UnityAction AttackEvent;
+        [HideInInspector]
+        public Enemy enemy;
+
+        private void OnTriggerEnter(Collider other)
         {
-            enemy = other.transform.gameObject.GetComponent<Enemy>();
-            AttackEvent.Invoke();
-            Debug.Log("Trigger");
+            if (other.transform.gameObject.tag == "Enemy")
+            {
+                enemy = other.transform.gameObject.GetComponent<Enemy>();
+                AttackEvent.Invoke();
+                Debug.Log("Trigger");
+            }
         }
     }
 }
+
