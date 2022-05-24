@@ -1059,6 +1059,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1210396442}
   - component: {fileID: 1210396443}
+  - component: {fileID: 1210396444}
   m_Layer: 0
   m_Name: Animator
   m_TagString: Untagged
@@ -1096,13 +1097,25 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 29d35e4fd7a59bd4b91d77044399dfa4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1210396444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1210396441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e89fe46c64e63e4998a71c9f0e63c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1431084573 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7836318227853680616, guid: 44f3e34e8bdf4024fb93e3f7c23b727b, type: 3}
@@ -8278,6 +8291,7 @@ MonoBehaviour:
   rangeSystem: {fileID: 0}
   animator: {fileID: 0}
   navmesh: {fileID: 0}
+  enemyState: 0
 --- !u!195 &9139484865020404003
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8288,7 +8302,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.87
-  m_Speed: 3.5
+  m_Speed: 2
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 1000
@@ -8314,7 +8328,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!137 &9139484865024516065
 SkinnedMeshRenderer:
