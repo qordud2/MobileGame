@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LivingEntity : MonoBehaviour
+public class LivingEntity : MonoBehaviour, IDamageable
 {
     [HideInInspector]
     public float startHelath = 200.0f;
@@ -20,7 +20,7 @@ public class LivingEntity : MonoBehaviour
         mana = startMana;
     }
 
-    public virtual void OnDamage(float damage)
+    public virtual void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal, bool react)
     {
         health -= damage;
 
@@ -47,7 +47,7 @@ public class LivingEntity : MonoBehaviour
     {
         if(onDeath != null)
         {
-            onDeath.Invoke();
+            onDeath?.Invoke();
         }
 
         dead = true;

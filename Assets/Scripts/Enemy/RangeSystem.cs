@@ -13,7 +13,7 @@ public class RangeSystem : MonoBehaviour
         if(other.transform.gameObject.tag == "Player")
         {
             player = other.transform.gameObject;
-            detectPlayerAction.Invoke();
+            detectPlayerAction?.Invoke();
         }
     }
 }

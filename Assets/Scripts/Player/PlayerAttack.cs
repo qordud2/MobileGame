@@ -7,7 +7,7 @@ namespace RPG
 {
     public class PlayerAttack : MonoBehaviour
     {
-
+        PlayerHealth playerHealth;
         public enum AttackState
         {
             Normal, Attack, Skill, Skill2,
@@ -26,19 +26,21 @@ namespace RPG
         float attackWaitTime = 0.0f;
         float skillTime = 0.0f;
         float skill2Time = 0.0f;
-        float skillDamage = 150.0f;
-        float skill2Damage = 120.0f;
 
         void Awake()
         {
             animator = GetComponentInChildren<Animator>();
             animEvent = animator.GetComponent<PlayerAnimEvent>();
             weaponTrigger = weponObject.GetComponent<WeaponTrigger>();
+            playerHealth = GetComponent<PlayerHealth>();
         }
 
         private void Start()
         {
             weaponTrigger.AttackEvent += OnAttack;
+            playerHealth.reactOnDamaged += OnDamaged;
+            animEvent.skillAttackCheck += SkillArea;
+            animEvent.skill2AttackCheck += SkillArea;
         }
 
         private void Update()
@@ -113,8 +115,6 @@ namespace RPG
 
                         }
 
-                        
-
                         if (animator.GetBool("Attacking"))
                         {
                             if (attackWaitTime > Mathf.Epsilon)
@@ -158,7 +158,7 @@ namespace RPG
         {
             if(animEvent.attackStartAction != null)
             {
-                animEvent.attackStartAction.Invoke();
+                animEvent.attackStartAction?.Invoke();
             }
 
             animator.SetBool("Attacking", true);
@@ -174,16 +174,16 @@ namespace RPG
             animator.SetBool("Attacking", false);
             if(animEvent.attackEndAction != null)
             {
-                animEvent.attackEndAction.Invoke();
+                animEvent.attackEndAction?.Invoke();
             }
         }
 
-        void OnAttack()
+        void OnAttack(Vector3 hitPoint, Vector3 hitNormal)
         {
-            Enemy attackEnemy = weaponTrigger.enemy;
+            Enemys attackEnemy = weaponTrigger.enemy;
             if (attackEnemy != null)
             {
-                attackEnemy.OnDamage(AttackDamage);
+                attackEnemy.OnDamage(AttackDamage, hitPoint, hitNormal, false);
                 AttackEnd();
             }
         }
@@ -192,12 +192,11 @@ namespace RPG
         {
             if (animEvent.skillStartAction != null)
             {
-                animEvent.skillStartAction.Invoke();
+                animEvent.skillStartAction?.Invoke();
             }
 
             animator.SetTrigger("SkillAttack");
             skillTime = 5.0f;
-            SkillArea(3, 0, skillDamage);
             ChangeState(AttackState.Normal);
         }
 
@@ -205,12 +204,11 @@ namespace RPG
         {
             if(animEvent.skillStartAction != null)
             {
-                animEvent.skillStartAction.Invoke();
+                animEvent.skillStartAction?.Invoke();
             }
 
             animator.SetTrigger("SkillAttack2");
             skill2Time = 3.0f;
-            SkillArea(1.5f, 0, skill2Damage);
             ChangeState(AttackState.Normal);
         }
 
@@ -222,14 +220,20 @@ namespace RPG
             {
                 if(hit.transform.gameObject.tag == "Enemy")
                 {
-                    Enemy enemy = hit.transform.gameObject.GetComponent<Enemy>();
+                    Enemys enemy = hit.transform.gameObject.GetComponent<Enemys>();
+                    Vector3 hitNormal = transform.position - enemy.transform.position;
                     if(enemy != null)
                     {
                         Debug.Log("EnemyHit");
-                        enemy.OnDamage(damage);
+                        enemy.OnDamage(damage, transform.position, hitNormal, false);
                     }
                 }
             }
+        }
+
+        void OnDamaged()
+        {
+            ChangeState(AttackState.Normal);
         }
 
         //private void OnDrawGizmos()

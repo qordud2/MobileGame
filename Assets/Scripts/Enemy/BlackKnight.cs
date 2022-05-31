@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 namespace RPG
 {
-    public class Enemy : LivingEntity
+    public class BlackKnight : Enemys
     {
         public RangeSystem rangeSystem;
         public Animator animator;
@@ -17,15 +17,7 @@ namespace RPG
         Vector3 initPosition;
         float romingTime = 0.0f;
         float attackTime = 0.0f;
-        float skillTime = 1.0f;
         float attackDamage = 30.0f;
-
-        public enum EnemyState
-        {
-            Normal, Roming, Attack, Skill
-        }
-
-        public EnemyState enemyState = EnemyState.Normal;
 
         private void Awake()
         {
@@ -35,6 +27,11 @@ namespace RPG
             animEvnet = GetComponentInChildren<EnemyAnimEvnet>();
 
             startHelath = 200.0f;
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
         }
 
         private void Start()
@@ -51,10 +48,9 @@ namespace RPG
             StateProcess();
         }
 
-        public void ChangeState(EnemyState s)
+        protected override void ChangeState(EnemyState s)
         {
-            if (enemyState == s) return;
-            enemyState = s;
+            base.ChangeState(s);
 
             switch (enemyState)
             {
@@ -129,7 +125,7 @@ namespace RPG
                             navmesh.SetDestination(player.transform.position);
 
                             float distance = Vector3.Distance(transform.position, player.transform.position);
-                            if (distance >= 20.0f)
+                            if (distance >= 10.0f)
                             {
                                 ChangeState(EnemyState.Normal);
                             }
@@ -144,36 +140,6 @@ namespace RPG
                             }
                         }
                         break;
-                    }
-                case EnemyState.Skill:
-                    {
-                        if (player != null)
-                        {
-                            Vector3 dir = player.transform.position - this.transform.position;
-                            dir.y = 0;
-                            dir.Normalize();
-                            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), Time.smoothDeltaTime * 10.0f);
-
-                            animator.SetFloat("Speed", navmesh.velocity.magnitude / navmesh.speed);
-                            navmesh.SetDestination(player.transform.position);
-
-                            float distance = Vector3.Distance(transform.position, player.transform.position);
-                            if (distance >= 20.0f)
-                            {
-                                ChangeState(EnemyState.Normal);
-                            }
-
-                            if (skillTime > Mathf.Epsilon)
-                            {
-                                skillTime -= Time.deltaTime;
-                            }
-                            else
-                            {
-                                OnSkill();
-                            }
-                        }
-
-                            break;
                     }
             }
         }
@@ -191,18 +157,7 @@ namespace RPG
                 {
                     animator.SetTrigger("Attack2");
                 }
-                ChangeState(EnemyState.Normal);
                 attackTime = 2.0f;
-            }
-        }
-
-        void OnSkill()
-        {
-            if (navmesh.remainingDistance <= navmesh.stoppingDistance && !dead && enemyState == EnemyState.Skill)
-            {
-                animator.SetTrigger("Skill");
-                skillTime = 5.0f;
-                ChangeState(EnemyState.Normal);
             }
         }
 
@@ -212,10 +167,10 @@ namespace RPG
             {
                 float dot = Vector3.Dot(transform.position, player.transform.position);
                 float distnace = Vector3.Distance(transform.position, player.transform.position);
+ 
                 if(dot >= 0 && distnace <= navmesh.stoppingDistance)
                 {
-                    player.OnDamage(attackDamage);
-                    Debug.Log("Enemy Attack");
+                    player.OnDamage(attackDamage, Vector3.zero, Vector3.zero, true);
                 }
             }
         }
@@ -230,39 +185,29 @@ namespace RPG
             navmesh.isStopped = false;
         }
 
-        public void Setup(float newHealth)
+        protected override void Setup(EnemyKind kind, float startHp, float hp)
         {
-            startHelath = newHealth;
+            base.Setup(kind, startHp, hp);
         }
 
 
-        public override void OnDamage(float damage)
+        public override void OnDamage(float damage, Vector3 hitPoint, Vector3 hitNormal, bool react)
         {
-            base.OnDamage(damage);
+            base.OnDamage(damage, hitPoint, hitNormal, react);
             Debug.Log("health : " + health);
         }
 
         public override void Die()
         {
             base.Die();
+            animator.SetTrigger("Die");
             Debug.Log("Eneemy Die");
         }
 
-        void DetectPlayer()
+        protected override void DetectPlayer()
         {
-            float random = Random.Range(0, 10);
-            if(random > 9)
-            {
-                ChangeState(EnemyState.Attack);
-            }
-            else
-            {
-                ChangeState(EnemyState.Skill);
-            }
-            
+            base.DetectPlayer();
         }
-
-
     }
 }
 

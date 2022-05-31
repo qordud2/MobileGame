@@ -602,7 +602,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.26
+  m_Radius: 8
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &675102325
 MonoBehaviour:
@@ -6901,9 +6901,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9139484865011338949}
-  - component: {fileID: 9139484865020404002}
   - component: {fileID: 9139484865020404003}
   - component: {fileID: 9139484865020404004}
+  - component: {fileID: 9139484865020404005}
   m_Layer: 0
   m_Name: BlackKnightDefault
   m_TagString: Enemy
@@ -8275,23 +8275,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9139484865010913965}
   m_Mesh: {fileID: 4300002, guid: 3f2f858992969dc42839040fa1c0e538, type: 3}
---- !u!114 &9139484865020404002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9139484865010914021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcce17a423dbad841a72e1e297d2b315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startHelath: 200
-  rangeSystem: {fileID: 0}
-  animator: {fileID: 0}
-  navmesh: {fileID: 0}
-  enemyState: 0
 --- !u!195 &9139484865020404003
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8330,6 +8313,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &9139484865020404005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9139484865010914021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0d7f9ba2fef8d9479a24b94c6e3a4b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startHelath: 200
+  enemyState: 0
+  enemyKind: 0
+  rangeSystem: {fileID: 0}
+  animator: {fileID: 0}
+  navmesh: {fileID: 0}
 --- !u!137 &9139484865024516065
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0

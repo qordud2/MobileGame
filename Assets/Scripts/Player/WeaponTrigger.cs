@@ -7,16 +7,18 @@ namespace RPG
 {
     public class WeaponTrigger : MonoBehaviour
     {
-        public UnityAction AttackEvent;
+        public UnityAction<Vector3, Vector3> AttackEvent;
         [HideInInspector]
-        public Enemy enemy;
+        public Enemys enemy;
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.transform.gameObject.tag == "Enemy")
             {
-                enemy = other.transform.gameObject.GetComponent<Enemy>();
-                AttackEvent.Invoke();
+                enemy = other.transform.gameObject.GetComponent<Enemys>();
+                Vector3 hitPoint = other.ClosestPoint(transform.position);
+                Vector3 hitNormal = transform.position - other.transform.position;
+                AttackEvent?.Invoke(hitPoint, hitNormal);
                 Debug.Log("Trigger");
             }
         }

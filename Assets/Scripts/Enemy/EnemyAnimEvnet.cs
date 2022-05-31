@@ -13,7 +13,7 @@ public class EnemyAnimEvnet : MonoBehaviour
     {
         if(attackEvent != null)
         {
-            attackEvent.Invoke();
+            attackEvent?.Invoke();
         }
     }
 }
